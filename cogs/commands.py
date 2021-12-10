@@ -3,6 +3,7 @@ from discord.ext import commands
 import asyncio
 from discord_components import *
 import os
+from datetime import datetime
 
 import config
 
@@ -49,24 +50,34 @@ class command(commands.Cog):
   @commands.command()
   async def help(self, ctx):
 
-    helpEmbed = discord.Embed( 
+    helpEmbed = []
+    embed = discord.Embed( 
       title = "in progress",
       description = f"""
 I host **24 hour** music channels! I'm only in a *few selected servers*.
 
 My prefix is `yua`
-__I'm under construction and I will have more features in the future__ 
+__I'm under development and I will have more features in the future__ 
 
 `setup`
 To setup me in the server
 """,
-      colour = 14982399
+      colour = 14982399,
+      timestamp=datetime.utcnow()
     )
-    helpEmbed.set_author(name = self.client.user, icon_url = self.client.user.avatar_url)
-    helpEmbed.add_field(name = "`addsong`", value = "add song to the server playlist", inline = False)
-    helpEmbed.add_field(name = "`serverplaylist`", value = "get server playlist", inline = False)
+    embed.set_author(name=self.client.user.name, icon_url=self.client.user.avatar_url)
+    embed.set_footer(text=f"Requested by {ctx.author}", icon_url=ctx.author.avatar_url)
+    embed.add_field(name = "`addsong <url>`", value = "add song to the server playlist", inline = False)
+    embed.add_field(name = "`remsong <index>`", value = "remove song from server playlist", inline = False)
+    embed.add_field(name = "`serverplaylist`", value = "get server playlist", inline = False)
+    embed.add_field(name = "`vc`", value = "get which voice channel I'm playing in", inline = False)
+    embed.add_field(name = "`changevc`", value = "change which channel i play in", inline = False)
+    embed.add_field(name = "`serverreset`", value = "remove data of vc and serverplaylist", inline = False)
 
-    await ctx.send(embed = helpEmbed)
+    helpEmbed.append(embed)
+
+
+    await ctx.send(embed = helpEmbed[0])
 
 
 

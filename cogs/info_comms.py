@@ -69,7 +69,7 @@ class info_comms(commands.Cog):
           server = i
         embed = discord.Embed(
           title="Sorry, your server is already setup",
-          description=f"I'm currently playing in <# {server['vc_id']}>, come join me!",
+          description=f"I'm currently playing in <#{server['vc_id']}>, come join me!",
           color=self.yua_color
         )
         embed.set_author(name=self.client.user.name, icon_url=self.client.user.avatar_url)
@@ -215,8 +215,76 @@ Write "CONFIRM" to confirm your change.
   @commands.command()
   @has_permissions(manage_guild=True)
   async def changevc(self, ctx):
-    pass
 
+    # check setup
+    is_setup, embed = self.check_setup(ctx.guild.id)
+    if not is_setup:
+      await ctx.send(embed=embed)
+      return
+
+    with open("./json/info.json", 'r') as f:
+      info = json.load(f)
+    
+    for i in info:
+      if i['server_id'] == ctx.guild.id:
+
+        # vc setup
+        embed = discord.Embed(
+          title="Resetup voice channel",
+          description=f"""
+Please join the voice channel you want me to play music in, and click on the button.
+Previous channel: <#{i['vc_id']}>
+
+__Timeout in 1 minute__
+          """,
+          color=self.yua_color
+        )
+        embed.set_author(name=self.client.user.name, icon_url=self.client.user.avatar_url)
+        vc_setup_embed = await ctx.send(embed=embed, components=[Button(label="Select!", style=ButtonStyle.green, emoji = self.client.get_emoji(885845968048779304))])
+
+        def check(interaction):
+          return interaction.message == vc_setup_embed
+
+        timeout = False
+        while timeout is False:
+          try:
+            interaction = await self.client.wait_for("button_click", timeout = 60, check=check)
+
+            if interaction:
+              if interaction.author != ctx.author:
+                await interaction.send("Only the one who invoked the command can select!")
+                await interaction.defer(edit_origin=True)
+              
+              if interaction.author.voice:
+                vc_id = ctx.author.voice.channel.id
+                await vc_setup_embed.delete()
+                timeout = True
+              else:
+                await interaction.send("Please connect to a voice channel before clicking it")
+
+          except asyncio.TimeoutError:
+            await ctx.send("iyamou-, you took too long! Please do `yua changevc` again when you made up your mind.")
+            await vc_setup_embed.delete()
+            return
+        
+        #success
+        i['vc_id'] = vc_id
+        with open("./json/info.json", 'w') as f:
+          json.dump(info, f, indent=2)
+
+        embed = discord.Embed(
+          title="Voice Channel Changed Successfully!",
+          color = self.yua_color,
+          timestamp = datetime.utcnow(),
+          description=f"""
+    From now on I will be playing in <#{vc_id}>!
+
+    Please add songs to the server playlist with youtube links using the `addsong` command!
+    """
+        )
+        embed.set_footer(text=self.client.user.name, icon_url=self.client.user.avatar_url)
+        await ctx.send(embed=embed)
+        await ctx.message.add_reaction(self.client.get_emoji(918494275728179251))
 
 
 
@@ -467,6 +535,34 @@ tip: Get the song's number from `yua serverplaylist`
       
         
 
+
+  @commands.command()
+  async def vc(self, ctx):
+
+    # check setup
+    issetup, embed = self.check_setup(ctx.guild.id)
+    if not issetup:
+      await ctx.send(embed=embed)
+      return
+
+    #find vc_id
+    with open("./json/info.json", "r") as f:
+      info = json.load(f)
+    
+    for i in info:
+      if i['server_id'] == ctx.guild.id:
+        embed = discord.Embed(
+          title="Voice Channel",
+          color=self.yua_color,
+          timestamp=datetime.utcnow(),
+          description=f"""
+I'm currently playing music in <#{i['vc_id']}> in this server!
+          """
+        )
+        embed.set_author(name=self.client.user.name, icon_url=self.client.user.avatar_url)
+        embed.set_footer(text=f"Requested by {ctx.author}", icon_url=ctx.author.avatar_url)
+        await ctx.send(embed=embed)
+        return
 
 
 
