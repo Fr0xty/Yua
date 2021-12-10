@@ -72,10 +72,10 @@ To setup me in the server
     embed.add_field(name = "`serverplaylist`", value = "get server playlist", inline = False)
     embed.add_field(name = "`vc`", value = "get which voice channel I'm playing in", inline = False)
     embed.add_field(name = "`changevc`", value = "change which channel i play in", inline = False)
-    embed.add_field(name = "`serverreset`", value = "remove data of vc and serverplaylist", inline = False)
+    embed.add_field(name = "`serverreset`", value = "remove data of __vc__ and __server playlist__", inline = False)
+    embed.add_field(name = "`clearplaylist`", value = "clear all songs from server playlist", inline = False)
 
     helpEmbed.append(embed)
-
 
     await ctx.send(embed = helpEmbed[0])
 

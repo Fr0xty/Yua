@@ -212,6 +212,83 @@ Write "CONFIRM" to confirm your change.
 
 
 
+
+  @commands.command()
+  async def clearplaylist(self, ctx):
+
+    # check setup
+    is_setup, embed = self.check_setup(ctx.guild.id)
+    if not is_setup:
+      await ctx.send(embed=embed)
+      return
+
+    # if server playlist is empty
+    with open("./json/info.json", 'r') as f:
+      info = json.load(f)
+    
+    for i in info:
+      if i['server_id'] == ctx.guild.id:
+        if i['songs'] == []:
+          embed = discord.Embed(
+            title="There is nothing to clear!",
+            color=self.yua_color,
+            timestamp=datetime.utcnow(),
+            description="Server Playlist is empty, there is nothing for me to clear! \n do `yua addsong <url>` to add songs!"
+          )
+          embed.set_author(name=self.client.user.name, icon_url=self.client.user.avatar_url)
+          embed.set_footer(text=f"Requested by {ctx.author}", icon_url=ctx.author.avatar_url)
+          await ctx.send(embed=embed)
+          return
+
+    # is setup
+    embed = discord.Embed(
+      title="⚠️ARE YOU SURE⚠️",
+      color=self.yua_color,
+      description=f"""
+This command will **CLEAR** __every song in the server playlist__ **FOREVER**!
+Your action is inreversable.
+
+Write "CONFIRM" to confirm your change.
+      """
+    )
+    await ctx.send(embed=embed)
+
+    # awaiting confirmation
+    def check(m):
+      return m.author == ctx.author and m.channel == ctx.channel and m.content == "CONFIRM"
+    try:
+      await self.client.wait_for("message", timeout=60, check=check)
+    except asyncio.TimeoutError:
+      # timedout
+      embed = discord.Embed(
+        title="Confirmation Timeout",
+        color = self.yua_color,
+        description="Back to safety! If you decide to clear, do `yua clearplaylist` again.",
+        timestamp = datetime.utcnow()
+      )
+      embed.set_footer(text=f"Requested by: {ctx.author}", icon_url=ctx.author.avatar_url)
+      await ctx.send(embed=embed)
+      return
+    else:
+      # confirmed
+      for i in info:
+        if i['server_id'] == ctx.guild.id:
+          i['songs'] = []
+
+      with open("./json/info.json", 'w') as f:
+        json.dump(info, f, indent=2)
+
+      embed = discord.Embed(
+        title="Cleared Successfully",
+        color=self.yua_color,
+        description="Server Playlist has been cleared \n do `yua addsong <url>` to add new songs!",
+        timestamp = datetime.utcnow()
+      )
+      embed.set_footer(text=f"Cleared by: {ctx.author}", icon_url=ctx.author.avatar_url)
+      await ctx.send(embed=embed)
+      return
+
+
   @commands.command()
   @has_permissions(manage_guild=True)
   async def changevc(self, ctx):
