@@ -8,28 +8,13 @@ from datetime import datetime
 import config
 
 
-client = discord.Client()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 class command(commands.Cog):
 
   def __init__(self, client):
     self.client = client
+
+    
 
 
   client = commands.Bot(command_prefix = config.prefixList, case_insensitive=True, intents = discord.Intents().all())

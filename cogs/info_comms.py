@@ -16,9 +16,6 @@ class info_comms(commands.Cog):
   def __init__(self, client):
     self.client = client
     self.YDL_OPTIONS = {'format': 'bestaudio', 'yesplaylist':'False'}
-    self.FFMPEG_OPTIONS = {'before_options': '-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5', 'options': '-vn'}
-    self.sList = []
-    self.nowplaying = ''
 
     self.yua_color = 16235890
 

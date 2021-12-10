@@ -2,6 +2,7 @@ import discord
 from discord.ext import commands
 import os, random
 import json
+from youtube_dl import YoutubeDL
 
 import config
 
@@ -9,6 +10,7 @@ class player(commands.Cog):
 
   def __init__(self, client):
     self.client = client
+    self.YDL_OPTIONS = {'format': 'bestaudio', 'yesplaylist':'True'}
     self.FFMPEG_OPTIONS = {'before_options': '-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5', 'options': '-vn'}
 
 
@@ -35,8 +37,27 @@ class player(commands.Cog):
 
 
   async def startplaying(self, server_id):
-    return
 
+    # get server songs
+    with open("./json/info.json", 'r') as f:
+      info = json.load(f)
+
+    for i in info:
+      if i['server_id'] == server_id:
+        server = i
+        break
+
+    # download all the songs
+    songs = []
+    for songs in server['songs']:
+      with YoutubeDL(self.YDL_OPTIONS) as ydl:
+        try:
+          video_data = ydl.extract_info(url, download=False)
+          _ = {
+            "title": video_data['title'],
+            "duration"
+          }
+        
 
 
 
