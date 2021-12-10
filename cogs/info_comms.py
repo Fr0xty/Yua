@@ -7,6 +7,7 @@ from youtube_dl import YoutubeDL
 import json
 import asyncio
 from discord_components import *
+from datetime import datetime
 
 import config
 
@@ -39,7 +40,7 @@ class info_comms(commands.Cog):
       embed = discord.Embed(
         title="Server is not setup yet!",
         color=self.yua_color,
-        description="Please do `yua setup` first!"
+        description="Please do `yua setup` first!",
       )
       embed.set_author(name=self.client.user.name, icon_url=self.client.user.avatar_url)
       return(False, embed)
@@ -60,7 +61,7 @@ class info_comms(commands.Cog):
     with open("./json/info.json", 'r') as f:
       info = json.load(f)
 
-    #check if server is already setup
+    # check if server is already setup
     issetup, embed = self.check_setup(ctx.guild.id)
     if issetup:
       for i in info:
@@ -68,7 +69,7 @@ class info_comms(commands.Cog):
           server = i
         embed = discord.Embed(
           title="Sorry, your server is already setup",
-          description=f"I'm currently playing in <#{server['vc_id']}>, come join me!",
+          description=f"I'm currently playing in <# {server['vc_id']}>, come join me!",
           color=self.yua_color
         )
         embed.set_author(name=self.client.user.name, icon_url=self.client.user.avatar_url)
@@ -76,7 +77,7 @@ class info_comms(commands.Cog):
         return
     
 
-    #vc setup
+    # vc setup
     embed = discord.Embed(
       title="Setup voice channel",
       description="""
@@ -115,7 +116,7 @@ __Timeout in 1 minute__
         return
 
 
-    #add a new dict for the server into info.json
+    # add a new dict for the server into info.json
     with open("./json/info.json", 'w') as f:
 
       server_dict = {
@@ -127,10 +128,11 @@ __Timeout in 1 minute__
       json.dump(info, f, indent=2)
 
     
-    #successful!
+    # successful!
     embed = discord.Embed(
       title="Your server has been successfully setup!",
       color = self.yua_color,
+      timestamp = datetime.utcnow(),
       description=f"""
 From now on I will be playing in <#{vc_id}>!
 
@@ -149,11 +151,13 @@ Please add songs to the server playlist with youtube links using the `addsong` c
   @has_permissions(manage_guild=True)
   async def serverreset(self, ctx):
 
+    # check setup
     is_setup, embed = self.check_setup(ctx.guild.id)
     if not is_setup:
       await ctx.send(embed=embed)
       return
 
+    # is setup
     embed = discord.Embed(
       title="⚠️ARE YOU SURE⚠️",
       color=self.yua_color,
@@ -170,26 +174,36 @@ Write "CONFIRM" to confirm your change.
     )
     await ctx.send(embed=embed)
 
+    # awaiting confirmation
     def check(m):
       return m.author == ctx.author and m.channel == ctx.channel and m.content == "CONFIRM"
     try:
       await self.client.wait_for("message", timeout=60, check=check)
     except asyncio.TimeoutError:
+      # timedout
       embed = discord.Embed(
         title="Confirmation Timeout",
         color = self.yua_color,
-        description="Back to safety! If you decide to reset, do `yua serverreset` again."
+        description="Back to safety! If you decide to reset, do `yua serverreset` again.",
+        timestamp = datetime.utcnow()
       )
       embed.set_footer(text=f"Requested by: {ctx.author}", icon_url=ctx.author.avatar_url)
       await ctx.send(embed=embed)
       return
     else:
-      #with open
-
+      # confirmed
+      with open("./json/info.json", 'r') as f:
+        info = json.load(f)
+        for i in range(0, len(info)):
+          if info[i]['server_id'] == ctx.guild.id:
+            info.pop(i)
+      with open("./json/info.json", 'w') as f:
+        json.dump(info, f, indent=2)
       embed = discord.Embed(
         title="Reset Successful",
         color=self.yua_color,
-        description="Every server data has been reset! \n do `yua setup` to setup again!"
+        description="Every server data has been reset! \n do `yua setup` to setup again!",
+        timestamp = datetime.utcnow()
       )
       embed.set_footer(text=f"Reset requested by: {ctx.author}", icon_url=ctx.author.avatar_url)
       await ctx.send(embed=embed)
@@ -228,7 +242,7 @@ I can only accept YouTube links. Although other music bots accept Spotify links,
         await ctx.send(embed=embed)
         return
       
-      #success
+      # success
       with open("./json/info.json") as f:
          info = json.load(f)
 
@@ -245,7 +259,8 @@ I can only accept YouTube links. Although other music bots accept Spotify links,
         embed = discord.Embed(
           title="Server is not setup yet!",
           color=self.yua_color,
-          description="Please do `yua setup` first!"
+          description="Please do `yua setup` first!",
+          timestamp = datetime.utcnow()
         )
         embed.set_footer(text=self.client.user.name, icon_url=self.client.user.avatar_url)
         await ctx.send(embed=embed)
@@ -254,7 +269,8 @@ I can only accept YouTube links. Although other music bots accept Spotify links,
       embed = discord.Embed(
         title="Success!",
         color=self.yua_color,
-        description="New banger music added to the server playlist, looking good!"
+        description="New banger music added to the server playlist, looking good!",
+        timestamp = datetime.utcnow()
       )
       embed.add_field(name="TITLE", value=video_data['title'])
       embed.add_field(name="URL", value=url)
@@ -265,9 +281,140 @@ I can only accept YouTube links. Although other music bots accept Spotify links,
       
 
 
+
+
   @commands.command()
-  async def remsong(self, ctx):
-    pass
+  async def remsong(self, ctx, index=None):
+
+    with open("./json/info.json", "r") as f:
+      info = json.load(f)
+
+    # check setup
+    issetup, embed = self.check_setup(ctx.guild.id)
+    if not issetup:
+      await ctx.send(embed=embed)
+      return
+
+    # if index is not entered
+    if index is None:
+      await ctx.send("An index is required!")
+      return
+
+    # check validity of index arg
+    try:
+      index = int(index)
+    except:
+      embed = discord.Embed(
+        title="Invalid Index",
+        color=self.yua_color,
+        timestamp=datetime.utcnow(),
+        description=f"""
+Please input an integer!
+
+tip: Get the song's number from `yua serverplaylist`
+        """
+      )
+      embed.set_author(name=self.client.user.name, icon_url=self.client.user.avatar_url)
+      embed.set_footer(text=f"Requested by {ctx.author}", icon_url=ctx.author.avatar_url)
+      await ctx.send(embed=embed)
+      return
+
+    # remove song
+    for i in info:
+      if i['server_id'] == ctx.guild.id:
+        
+        if i['songs'] == []:
+          # no song in playlist
+          embed = discord.Embed(
+            title="There is no song in Server Playlist!",
+            color=self.yua_color,
+            description="start adding songs using `yua addsong`!",
+            timestamp = datetime.utcnow()
+          )
+          embed.set_author(name=self.client.user.name, icon_url=self.client.user.avatar_url)
+          embed.set_footer(text=f"Requested by {ctx.author}", icon_url=ctx.author.avatar_url)
+          await ctx.send(embed=embed)
+          return
+
+        if index not in range(1, len(i['songs'])+1):
+          # index out of range
+          embed = discord.Embed(
+            title="Invalid Index",
+            color=self.yua_color,
+            timestamp=datetime.utcnow(),
+            description=f"""
+There is no song with the number `{index}`!
+
+tip: Get the song's number from `yua serverplaylist`
+            """
+          )
+          embed.set_author(name=self.client.user.name, icon_url=self.client.user.avatar_url)
+          embed.set_footer(text=f"Requested by {ctx.author}", icon_url=ctx.author.avatar_url)
+          await ctx.send(embed=embed)
+          return
+        
+        else:
+          # valid index
+          # confirmation
+          index -= 1  # to list index
+
+          embed = discord.Embed(
+            title="Are you sure you want to remove the following song?",
+            color=self.yua_color,
+            timestamp=datetime.utcnow()
+          )
+          embed.set_author(name=self.client.user.name, icon_url=self.client.user.avatar_url)
+          embed.add_field(name="TITLE", value=i['songs'][index]['title'])
+          embed.add_field(name="URL", value=i['songs'][index]['url'])
+          embed.set_footer(text=f"Requested by {ctx.author}", icon_url=ctx.author.avatar_url)
+          #thumbnail
+          with YoutubeDL(self.YDL_OPTIONS) as  ydl:
+            try:
+              video_data = ydl.extract_info(i['songs'][index]['url'], download=False)
+              embed.set_image(url=video_data['thumbnails'][-1]['url'])
+            except:
+              # if the vid is taken down
+              break
+
+          confirmation_embed = await ctx.send(embed=embed, components=[Button(label="Confirm!", style=ButtonStyle.green, emoji = self.client.get_emoji(885845962659074088))])
+
+          def check(interaction):
+            return interaction.message == confirmation_embed
+          while True:
+            try:
+              interaction = await self.client.wait_for("button_click", check=check, timeout=60)
+
+              if interaction.author != ctx.author:
+                await interaction.send("Only the one who invoked the command can confirm!")
+
+              if interaction.author == ctx.author:
+                # confirmed
+                await interaction.defer(edit_origin=True)
+                i['songs'].pop(index)
+                with open("./json/info.json", "w") as _:
+                  json.dump(info, _, indent=2)
+
+                embed = discord.Embed(
+                  title="Removed Song Successfully",
+                  color=self.yua_color,
+                  timestamp=datetime.utcnow(),
+                  description=f""""""
+                )
+                embed.set_author(name=self.client.user.name, icon_url=self.client.user.avatar_url)
+                embed.set_footer(text=f"Requested by {ctx.author}", icon_url=ctx.author.avatar_url)
+                await ctx.send(embed=embed)
+                return
+            except asyncio.TimeoutError:
+              embed = discord.Embed(
+                title="Timeout",
+                color=self.yua_color,
+                timestamp=datetime.utcnow(),
+                description=f"You took too long! Do `yua remsong <index>` again when you're ready."
+              )
+              embed.set_author(name=self.client.user.name, icon_url=self.client.user.avatar_url)
+              embed.set_footer(text=f"Requested by {ctx.author}", icon_url=ctx.author.avatar_url)
+              await ctx.send(embed=embed)
+              return
 
 
 
@@ -277,42 +424,49 @@ I can only accept YouTube links. Although other music bots accept Spotify links,
     with open("./json/info.json", "r") as f:
       info = json.load(f)
 
-    #get songs arranged
-    setup = False
-    for i in info:
-
-      if i['server_id'] == ctx.guild.id:
-        setup = True
-        _ = ''
-
-        index = 1
-        for i in i['songs']:
-          
-          _ += f"{index}. [{i['title']}]({i['url']}) \n "
-          index += 1
-        
-    #return if not setup
-    if not setup:
-      embed = discord.Embed(
-        title="Server is not setup yet!",
-        color=self.yua_color,
-        description="Please do `yua setup` first!"
-      )
-      embed.set_footer(text=self.client.user.name, icon_url=self.client.user.avatar_url)
+    # check setup
+    issetup, embed = self.check_setup(ctx.guild.id)
+    if not issetup:
       await ctx.send(embed=embed)
       return
 
-    #send playlist
-    embed = discord.Embed(
-      title=f"Playlist for {ctx.guild.name}",
-      color=self.yua_color,
-      description=_
-    )
-    embed.set_footer(text=f"Requested by {ctx.author}", icon_url=ctx.author.avatar_url)
+    # is setup
+    for i in info:
+      if i['server_id'] == ctx.guild.id:
+
+        _ = ''
+        index = 1
+        for i in i['songs']:
+          _ += f"{index}. [{i['title']}]({i['url']}) \n "
+          index += 1
+
+    
+    if _ == '':
+      # no song in playlist
+      embed = discord.Embed(
+        title="There is no song in Server Playlist!",
+        color=self.yua_color,
+        description="start adding songs using `yua addsong`!",
+        timestamp = datetime.utcnow()
+      )
+      embed.set_author(name=self.client.user.name, icon_url=self.client.user.avatar_url)
+      embed.set_footer(text=f"Requested by {ctx.author}", icon_url=ctx.author.avatar_url)
+    else:
+      # has song in playlist
+      embed = discord.Embed(
+        title=f"Playlist for {ctx.guild.name}",
+        color=self.yua_color,
+        description=_,
+        timestamp = datetime.utcnow()
+      )
+      embed.set_author(name=self.client.user.name, icon_url=self.client.user.avatar_url)
+      embed.set_footer(text=f"Requested by {ctx.author}", icon_url=ctx.author.avatar_url)
+
     await ctx.send(embed=embed)
     await ctx.message.add_reaction(self.client.get_emoji(918494275728179251))
       
         
+
 
 
 
