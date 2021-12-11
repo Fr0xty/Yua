@@ -361,70 +361,9 @@ __Timeout in 1 minute__
 
 
 
-  @commands.command()
-  @has_permissions(manage_guild=True)
-  async def addsong(self, ctx, url):
 
-    with YoutubeDL(self.YDL_OPTIONS) as  ydl:
-      try:
-        video_data = ydl.extract_info(url, download=False)
-      except:
-        embed = discord.Embed(
-          title="Failed to add song",
-          color = config.yua_color,
-          description=f"""
-The link provide is invalid.
-```{url}```
-          
-I can only accept YouTube links. Although other music bots accept Spotify links, they're still searching on YouTube due to limitation imposed by Spotify.
-          """
-        )
-        await ctx.send(embed=embed)
-        return
-      
-      # success
-      with open("./json/info.json") as f:
-         info = json.load(f)
 
-         for i in info:
-           setup = False
-           if i["server_id"] == ctx.guild.id:
-             setup = True
 
-             _ = {
-               "title": video_data['title'],
-               "url": url,
-               "dur": video_data['duration']
-             }
-             i["songs"].append(_)
-
-             with open("./json/info.json", "w") as fw:
-               json.dump(info, fw, indent=2)
-
-      if not setup:
-        embed = discord.Embed(
-          title="Server is not setup yet!",
-          color=config.yua_color,
-          description="Please do `yua setup` first!",
-          timestamp = datetime.utcnow()
-        )
-        embed.set_footer(text=self.client.user.name, icon_url=self.client.user.avatar_url)
-        await ctx.send(embed=embed)
-        return
-
-      embed = discord.Embed(
-        title="Success!",
-        color=config.yua_color,
-        description="New banger music added to the server playlist, looking good!",
-        timestamp = datetime.utcnow()
-      )
-      embed.add_field(name="TITLE", value=video_data['title'])
-      embed.add_field(name="URL", value=url)
-      embed.set_image(url=video_data['thumbnails'][-1]['url'])
-      embed.set_footer(text=f"Song added by: {ctx.author}", icon_url=ctx.author.avatar_url)
-      await ctx.send(embed=embed)
-      await ctx.message.add_reaction(self.client.get_emoji(918494275728179251))
-      
 
 
 
