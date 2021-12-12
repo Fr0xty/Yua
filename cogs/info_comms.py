@@ -594,8 +594,20 @@ tip: Get the song's number from `yua serverplaylist`
 
         _ = ''
         index = 1
-        for i in i['songs']:
-          _ += f"{index}. [{i['title']}]({i['url']}) \n "
+        for song in i['songs']:
+          seconds = song['dur'] % (24 * 3600)
+          hour = seconds // 3600
+          seconds %= 3600
+          minutes = seconds // 60
+          seconds %= 60
+          if hour:
+            dur = "%dh %02dm %02ds" % (hour, minutes, seconds)
+          elif minutes:
+            dur = "%02dm %02ds" % (minutes, seconds)
+          else:
+            dur = "%02ds" % (seconds)
+
+          _ += f"{index}. [{song['title']}]({song['url']}) {dur} \n "
           index += 1
 
     

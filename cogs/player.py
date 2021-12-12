@@ -84,6 +84,8 @@ class player(commands.Cog):
 
     # shuffle server['songs'] list and play first song
     random.shuffle(the_server['songs'])
+    with open("./json/info_clone.json", 'w') as f:
+      json.dump(clone_info, f, indent=2)
 
     with YoutubeDL(self.YDL_OPTIONS) as ydl:
       success = False
@@ -138,6 +140,9 @@ class player(commands.Cog):
       if server['server_id'] == server_id:
 
         server['songs'].pop(0)
+        with open("./json/info_clone.json", 'w') as f:
+          json.dump(clone_info, f, indent=2)
+          
         # if no more songs
         if server['songs'] == []:
           #replenish info_clone.json
