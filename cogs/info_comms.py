@@ -10,6 +10,7 @@ from discord_components import *
 from datetime import datetime
 
 import config
+from cogs import player
 
 class info_comms(commands.Cog):
 
@@ -111,9 +112,8 @@ __Timeout in 1 minute__
         return
 
 
-    # add a new dict for the server into info.json
+    # add a new dict for the server into info.json and info_clone.json
     with open("./json/info.json", 'w') as f:
-
       server_dict = {
         "server_id": ctx.guild.id,
         "vc_id": vc_id,
@@ -121,6 +121,16 @@ __Timeout in 1 minute__
       }
       info.append(server_dict)
       json.dump(info, f, indent=2)
+
+    with open("./json/info_clone.json", 'w') as f:
+      server_dict = {
+        "server_id": ctx.guild.id,
+        "vc_id": vc_id,
+        "songs": []
+      }
+      info.append(server_dict)
+      json.dump(info, f, indent=2)
+
 
     
     # successful!
@@ -363,6 +373,69 @@ __Timeout in 1 minute__
 
 
 
+  @commands.command()
+  @has_permissions(manage_guild=True)
+  async def addsong(self, ctx, url):
+
+    #check setup status
+    setup, embed = self.check_setup(ctx.guild.id)
+    if not setup:
+      await ctx.send(embed=embed)
+      return
+
+    with YoutubeDL(self.YDL_OPTIONS) as  ydl:
+      try:
+        video_data = ydl.extract_info(url, download=False)
+      except:
+        embed = discord.Embed(
+          title="Failed to add song",
+          color = config.yua_color,
+          description=f"""
+The link provide is invalid.
+```{url}```
+          
+I can only accept YouTube links. Although other music bots accept Spotify links, they're still searching on YouTube due to limitation imposed by Spotify.
+          """
+        )
+        await ctx.send(embed=embed)
+        return
+      
+      # success
+      first_time = False
+      info = config.read_from_info()
+      
+      for i in info:
+        if i["server_id"] == ctx.guild.id:
+          if i['songs'] == []:
+            first_time = True
+
+          _ = {
+            "title": video_data['title'],
+            "url": url,
+            "dur": video_data['duration']
+          }
+          i["songs"].append(_)
+
+          with open("./json/info.json", "w") as fw:
+            json.dump(info, fw, indent=2)
+      if first_time:
+        await player.player(self.client).first_time_start(ctx.guild.id)
+        
+      
+
+
+      embed = discord.Embed(
+        title="Success!",
+        color=config.yua_color,
+        description="New banger music added to the server playlist, looking good!",
+        timestamp = datetime.utcnow()
+      )
+      embed.add_field(name="TITLE", value=video_data['title'])
+      embed.add_field(name="URL", value=url)
+      embed.set_image(url=video_data['thumbnails'][-1]['url'])
+      embed.set_footer(text=f"Song added by: {ctx.author}", icon_url=ctx.author.avatar_url)
+      await ctx.send(embed=embed)
+      await ctx.message.add_reaction(self.client.get_emoji(918494275728179251))
 
 
 

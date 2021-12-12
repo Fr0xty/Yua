@@ -37,12 +37,10 @@ class command(commands.Cog):
 
     helpEmbed = []
     embed = discord.Embed( 
-      title = "in progress",
+      title = "My Commands",
       description = f"""
 I host **24 hour** music channels! I'm only in a *few selected servers*.
-
 My prefix is `yua`
-__I'm under development and I will have more features in the future__ 
 
 Github Repo: https://github.com/Fr0xty/Yua
 

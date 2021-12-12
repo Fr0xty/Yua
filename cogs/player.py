@@ -49,22 +49,26 @@ class player(commands.Cog):
 
 
 
-
   async def first_time_start(self, server_id):
     info = config.read_from_info()
-    clone_info = config.read_from_info_clone()
-    
+    info_clone = config.read_from_info_clone()
+
     for server in info:
       if server['server_id'] == server_id:
         the_server = server
         break
 
-    clone_info.append(the_server)
+    for server in info_clone:
+      if server['server_id'] == server_id:
+        server['songs'] = the_server['songs']
+        break
+        
     with open("./json/info_clone.json", 'w') as f:
-      json.dump(clone_info, f, indent=2)
-
+      json.dump(info_clone, f, indent=2)
+    
+    ch = await self.client.fetch_channel(the_server['vc_id'])
+    await ch.connect()
     await self.start(server_id)
-
 
     
 
@@ -127,7 +131,6 @@ class player(commands.Cog):
 
 
   async def player(self, server_id):
-    print('hi')
     clone_info = config.read_from_info_clone()
     
     # find server
@@ -197,81 +200,6 @@ class player(commands.Cog):
   client = commands.Bot(command_prefix = config.prefixList, case_insensitive=True, intents = discord.Intents().all())
 
 
-  @commands.command()
-  @has_permissions(manage_guild=True)
-  async def addsong(self, ctx, url):
-
-    with YoutubeDL(self.YDL_OPTIONS) as  ydl:
-      try:
-        video_data = ydl.extract_info(url, download=False)
-      except:
-        embed = discord.Embed(
-          title="Failed to add song",
-          color = config.yua_color,
-          description=f"""
-The link provide is invalid.
-```{url}```
-          
-I can only accept YouTube links. Although other music bots accept Spotify links, they're still searching on YouTube due to limitation imposed by Spotify.
-          """
-        )
-        await ctx.send(embed=embed)
-        return
-      
-      # success
-      with open("./json/info.json") as f:
-         info = json.load(f)
-
-         for i in info:
-           setup = False
-           if i["server_id"] == ctx.guild.id:
-             setup = True
-
-             _ = {
-               "title": video_data['title'],
-               "url": url,
-               "dur": video_data['duration']
-             }
-             i["songs"].append(_)
-
-             with open("./json/info.json", "w") as fw:
-               json.dump(info, fw, indent=2)
-
-      if not setup:
-        embed = discord.Embed(
-          title="Server is not setup yet!",
-          color=config.yua_color,
-          description="Please do `yua setup` first!",
-          timestamp = datetime.utcnow()
-        )
-        embed.set_footer(text=self.client.user.name, icon_url=self.client.user.avatar_url)
-        await ctx.send(embed=embed)
-        return
-
-      embed = discord.Embed(
-        title="Success!",
-        color=config.yua_color,
-        description="New banger music added to the server playlist, looking good!",
-        timestamp = datetime.utcnow()
-      )
-      embed.add_field(name="TITLE", value=video_data['title'])
-      embed.add_field(name="URL", value=url)
-      embed.set_image(url=video_data['thumbnails'][-1]['url'])
-      embed.set_footer(text=f"Song added by: {ctx.author}", icon_url=ctx.author.avatar_url)
-      await ctx.send(embed=embed)
-      await ctx.message.add_reaction(self.client.get_emoji(918494275728179251))
-
-      # if this is first time adding song => start playing
-      clone_info = config.read_from_info_clone()
-      
-      # check if cloned song list is empty (aka first time adding song)
-      first_time = True
-      for server in clone_info:
-        if server['server_id'] == ctx.guild.id and server['songs'] != []:
-          first_time = False
-
-      if first_time:
-        await self.first_time_start(ctx.guild.id)
 
 
 
