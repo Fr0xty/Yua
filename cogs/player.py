@@ -92,6 +92,10 @@ class player(commands.Cog):
       while success is False:
         try:
           video_data = ydl.extract_info(the_server['songs'][0]['url'], download=False)
+          # store thumbnail for current song in info_clone.json / for "np" command
+          the_server['songs'][0].update({"thumbnail": video_data['thumbnail']})
+          with open("./json/info_clone.json", 'w') as f:
+            json.dump(clone_info, f, indent=2)
           success = True
         except:
           # failed (yt vid taken down)
@@ -160,6 +164,10 @@ class player(commands.Cog):
           while success is False:
             try:
               video_data = ydl.extract_info(the_server['songs'][0]['url'], download=False)
+              # store thumbnail for current song in info_clone.json / for "np" command
+              the_server['songs'][0].update({"thumbnail": video_data['thumbnail']})
+              with open("./json/info_clone.json", 'w') as f:
+                json.dump(clone_info, f, indent=2)
               success = True
             except:
               # failed (yt vid taken down)

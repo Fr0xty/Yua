@@ -39,3 +39,17 @@ def get_server_songs(server_id):
   for server in info:
     if server['server_id'] == server_id:
       return server['songs']
+
+
+def convert_seconds(seconds):
+  seconds = seconds % (24 * 3600)
+  hour = seconds // 3600
+  seconds %= 3600
+  minutes = seconds // 60
+  seconds %= 60
+  if hour:
+    return "%dh %02dm %02ds" % (hour, minutes, seconds)
+  elif minutes:
+    return "%02dm %02ds" % (minutes, seconds)
+  else:
+    return "%02ds" % (seconds)

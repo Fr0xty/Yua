@@ -4,14 +4,10 @@
     "vc_id": 889472080129716265,
     "songs": [
       {
-        "title": "\u30c4\u30e6 - \u6ce5\u306e\u5206\u969b\u3067\u79c1\u3060\u3051\u306e\u5927\u5207\u3092\u596a\u304a\u3046\u3060\u306a\u3093\u3066 MV",
-        "url": "https://youtu.be/M7FH1dL51oU",
-        "dur": 194
-      },
-      {
         "title": "t+pazolite - Ponko2 Girlish (feat. \u306a\u306a\u3072\u3089)",
         "url": "https://youtu.be/rjel25XHgWE",
-        "dur": 229
+        "dur": 229,
+        "thumbnail": "https://i.ytimg.com/vi/rjel25XHgWE/maxresdefault.jpg"
       }
     ]
   }
