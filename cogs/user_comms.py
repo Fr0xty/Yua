@@ -154,13 +154,93 @@ I'm currently playing music in <#{i['vc_id']}> in this server!
     embed = discord.Embed(
       title="Currently Playing:",
       color = config.yua_color,
-      timestamps = datetime.utcnow(),
+      timestamp = datetime.utcnow(),
       description = f"[{songs[0]['title']}]({songs[0]['url']}) {dur}"
     )
     embed.set_author(name=self.client.user.name, icon_url=self.client.user.avatar_url)
     embed.set_footer(text=f"Requested by: {ctx.author}", icon_url=ctx.author.avatar_url)
     embed.set_thumbnail(url=songs[0]['thumbnail'])
     await ctx.send(embed=embed)
+
+
+
+
+
+  @commands.command()
+  async def skip(self, ctx):
+
+    # check setup
+    issetup, embed = self.check_setup(ctx.guild.id)
+    if not issetup:
+      await ctx.send(embed=embed)
+      return
+    
+    vc = discord.utils.get(self.client.voice_clients, guild=self.client.get_guild(ctx.guild.id))
+    if vc:
+      vc.stop()
+      await ctx.message.add_reaction(self.client.get_emoji(918494275728179251))
+    else:
+      embed = discord.Embed(
+        title="I'm not playing any songs!",
+        color=config.yua_color,
+        timestamp=datetime.utcnow(),
+        description=f"Please add songs to the serverplaylist by doing `yua addsong <url>`"
+      )
+      embed.set_author(name=self.client.user.name, icon_url=self.client.user.avatar_url)
+      embed.set_footer(text=ctx.author, icon_url=ctx.author.avatar_url)
+      await ctx.send(embed=embed)
+
+
+
+
+
+  @commands.command(aliases=['q'])
+  async def queue(self, ctx):
+
+    # check setup
+    issetup, embed = self.check_setup(ctx.guild.id)
+    if not issetup:
+      await ctx.send(embed=embed)
+      return
+
+    vc = discord.utils.get(self.client.voice_clients, guild=self.client.get_guild(ctx.guild.id))
+    if not vc:
+      embed = discord.Embed(
+        title="I'm not playing any songs!",
+        color=config.yua_color,
+        timestamp=datetime.utcnow(),
+        description=f"Please add songs to the serverplaylist by doing `yua addsong <url>`"
+      )
+      embed.set_author(name=self.client.user.name, icon_url=self.client.user.avatar_url)
+      embed.set_footer(text=ctx.author, icon_url=ctx.author.avatar_url)
+      await ctx.send(embed=embed)
+      return
+
+    info_clone = config.read_from_info_clone()
+    _ = ''
+    index = 1
+
+    for server in info_clone:
+      if server['server_id'] == ctx.guild.id:
+        for song in server['songs']:
+          dur = config.convert_seconds(song['dur'])
+          if index == 1:
+            _ += f"**Now Playing** \n [{song['title']}]({song['url']}) {dur} \n\n "
+          else:
+            _ += f"{index}. [{song['title']}]({song['url']}) {dur} \n "
+          index += 1
+    _ += "\n __Queue will be replenished once there's no songs!__"
+    embed = discord.Embed(
+      title=f"Server Queue for {ctx.guild}",
+      color = config.yua_color,
+      timestamp=datetime.utcnow(),
+      description=_
+    )
+    embed.set_author(name=self.client.user.name, icon_url=self.client.user.avatar_url)
+    embed.set_footer(text=f"Requested by: {ctx.author}", icon_url=ctx.author.avatar_url)
+    await ctx.send(embed=embed)
+
+
 
 
 

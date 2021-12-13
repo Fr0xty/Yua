@@ -59,6 +59,9 @@ To setup me in the server
     embed.add_field(name = "`changevc`", value = "change which channel i play in", inline = False)
     embed.add_field(name = "`serverreset`", value = "remove data of __vc__ and __server playlist__", inline = False)
     embed.add_field(name = "`clearplaylist`", value = "clear all songs from server playlist", inline = False)
+    embed.add_field(name = "`nowplaying` `np`", value = "get now playing song", inline = False)
+    embed.add_field(name = "`skip`", value = "skip current song", inline = False)
+    embed.add_field(name = "`queue` `q`", value = "get current song queue", inline = False)
 
     helpEmbed.append(embed)
 

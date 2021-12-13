@@ -197,12 +197,17 @@ Write "CONFIRM" to confirm your change.
       return
     else:
       # confirmed
-      with open("./json/info.json", 'r') as f:
-        info = json.load(f)
-        for i in range(0, len(info)):
-          if info[i]['server_id'] == ctx.guild.id:
-            info.pop(i)
+      info = config.read_from_info()
+      info_clone = config.read_from_info_clone()
+      for server in info:
+        if server['server_id'] == ctx.guild.id:
+          info.remove(server)
+      for server in info_clone:
+        if server['server_id'] == ctx.guild.id:
+          info.remove(server)
       with open("./json/info.json", 'w') as f:
+        json.dump(info, f, indent=2)
+      with open("./json/info_clone.json", 'w') as f:
         json.dump(info, f, indent=2)
       embed = discord.Embed(
         title="Reset Successful",
