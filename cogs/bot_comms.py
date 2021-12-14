@@ -35,37 +35,38 @@ class command(commands.Cog):
   @commands.command()
   async def help(self, ctx):
 
-    helpEmbed = []
-    embed = discord.Embed( 
-      title = "My Commands",
-      description = f"""
-I host **24 hour** music channels! I'm only in a *few selected servers*.
-My prefix is `yua`
+    helpEmbed = config.helpEmbed(self.client, ctx.author)
+    current=0
+    msg = await ctx.send(embed=helpEmbed[current],
+    components=[
+      [Button(style=ButtonStyle.gray, label="🢀"),
+      Button(style=ButtonStyle.gray, label="🢂")]
+    ])
+    def check(interaction):
+      return interaction.message.id == msg.id
+    while True:
+      try:
+        interaction = await self.client.wait_for("button_click", timeout=300, check=check)
+        
+        if interaction.component.label == "🢀":
+          if current > 0:
+            current -= 1
+            await msg.edit(embed=helpEmbed[current])
+            await interaction.defer(edit_origin=True)
+          else:
+            await interaction.defer(edit_origin=True)
 
-Github Repo: https://github.com/Fr0xty/Yua
-
-`setup`
-To setup me in the server
-""",
-      colour = 14982399,
-      timestamp=datetime.utcnow()
-    )
-    embed.set_author(name=self.client.user.name, icon_url=self.client.user.avatar_url)
-    embed.set_footer(text=f"Requested by {ctx.author}", icon_url=ctx.author.avatar_url)
-    embed.add_field(name = "`addsong <url>`", value = "add song to the server playlist", inline = False)
-    embed.add_field(name = "`remsong <index>`", value = "remove song from server playlist", inline = False)
-    embed.add_field(name = "`serverplaylist`", value = "get server playlist", inline = False)
-    embed.add_field(name = "`vc`", value = "get which voice channel I'm playing in", inline = False)
-    embed.add_field(name = "`changevc`", value = "change which channel i play in", inline = False)
-    embed.add_field(name = "`serverreset`", value = "remove data of __vc__ and __server playlist__", inline = False)
-    embed.add_field(name = "`clearplaylist`", value = "clear all songs from server playlist", inline = False)
-    embed.add_field(name = "`nowplaying` `np`", value = "get now playing song", inline = False)
-    embed.add_field(name = "`skip`", value = "skip current song", inline = False)
-    embed.add_field(name = "`queue` `q`", value = "get current song queue", inline = False)
-
-    helpEmbed.append(embed)
-
-    await ctx.send(embed = helpEmbed[0])
+        if interaction.component.label == "🢂":
+          if current < 1:
+            current += 1
+            await msg.edit(embed=helpEmbed[current])
+            await interaction.defer(edit_origin=True)
+          else:
+            await interaction.defer(edit_origin=True)
+      
+      except asyncio.TimeoutError:
+        await msg.delete()
+        return
 
 
 

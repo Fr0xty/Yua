@@ -1,6 +1,8 @@
 import itertools
 import json
 import random
+import discord
+from datetime import datetime
 
 chars = "yua "
 prefixList = list(map(''.join, itertools.product(*zip(chars.upper(), chars.lower()))))
@@ -53,3 +55,54 @@ def convert_seconds(seconds):
     return "%02dm %02ds" % (minutes, seconds)
   else:
     return "%02ds" % (seconds)
+
+
+
+def helpEmbed(client, author):
+
+  _ = []
+
+  embed = discord.Embed(
+    title="Yua's Moderation Commands!",
+    color=yua_color,
+    timestamp=datetime.utcnow(),
+    description=f"""
+I host **24 hour** music channels! I'm only in a *few selected servers*.
+My prefix is `yua`
+
+Github Repo: https://github.com/Fr0xty/Yua
+
+`setup`
+To setup me in the server
+
+`serverreset` • reset the whole server's settings (irreversible)
+`addsong <url>` • add song to serverplaylist
+`remsong <index>` • remove song from serverplaylist
+`changevc` • change which voice channel I will be playing in
+`serverplaylist` • view serverplaylist
+`clearplaylist` • reset serverplaylist (irreversible)
+    """
+  )
+  embed.set_author(name=f"{client.user.name} | Page 1 / 2", icon_url=client.user.avatar_url)
+  embed.set_footer(text=f"Requested by {author}", icon_url=author.avatar_url)
+  _.append(embed)
+
+
+
+  embed = discord.Embed(
+    title="User Commands!",
+    color=yua_color,
+    timestamp=datetime.utcnow(),
+    description=f"""
+`vc` • get which voice channel I'm playing in
+`nowplaying` `np` • view current playing song
+`skip` • skip current song
+`queue` `q` • view current song queue
+    """
+  )
+  embed.set_author(name=f"{client.user.name} | Page 2 / 2", icon_url=client.user.avatar_url)
+  embed.set_footer(text=f"Requested by {author}", icon_url=author.avatar_url)
+  _.append(embed)
+
+
+  return _

@@ -4,10 +4,15 @@
     "vc_id": 889472080129716265,
     "songs": [
       {
+        "title": "\u30c4\u30e6 - \u6ce5\u306e\u5206\u969b\u3067\u79c1\u3060\u3051\u306e\u5927\u5207\u3092\u596a\u304a\u3046\u3060\u306a\u3093\u3066 MV",
+        "url": "https://youtu.be/M7FH1dL51oU",
+        "dur": 194,
+        "thumbnail": "https://i.ytimg.com/vi_webp/M7FH1dL51oU/maxresdefault.webp"
+      },
+      {
         "title": "\u30c4\u30e6 - \u5974\u96b7\u3058\u3083\u306a\u3044\u306a\u3089\u4f55\u3067\u3059\u304b\uff1f MV",
         "url": "https://youtu.be/4tT0j_-42Ac",
-        "dur": 167,
-        "thumbnail": "https://i.ytimg.com/vi_webp/4tT0j_-42Ac/maxresdefault.webp"
+        "dur": 167
       }
     ]
   },
@@ -16,10 +21,14 @@
     "vc_id": 919893689290072114,
     "songs": [
       {
+        "title": "C\u00f6 shu Nie \u2013 \u305a\u3063\u3068\u305d\u3070\u306b (Official Video) / Mini Album \"LITMUS\"",
+        "url": "https://youtu.be/X_hujJnYeDE",
+        "dur": 246
+      },
+      {
         "title": "YUC'e - Tokimeki Holiday",
         "url": "https://youtu.be/zXOoX0nl2rA",
-        "dur": 215,
-        "thumbnail": "https://i.ytimg.com/vi_webp/zXOoX0nl2rA/maxresdefault.webp?v=61a05a55"
+        "dur": 215
       }
     ]
   }
