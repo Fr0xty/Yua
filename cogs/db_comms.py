@@ -35,8 +35,8 @@ class info_comms(commands.Cog):
     if not setup:
       embed = discord.Embed(
         title="Server is not setup yet!",
-        color=config.yua_color,
-        description="Please do `yua setup` first!",
+        color=config.yuna_color,
+        description="Please do `yuna setup` first!",
       )
       embed.set_author(name=self.client.user.name, icon_url=self.client.user.avatar_url)
       return(False, embed)
@@ -66,7 +66,7 @@ class info_comms(commands.Cog):
         embed = discord.Embed(
           title="Sorry, your server is already setup",
           description=f"I'm currently playing in <#{server['vc_id']}>, come join me!",
-          color=config.yua_color
+          color=config.yuna_color
         )
         embed.set_author(name=self.client.user.name, icon_url=self.client.user.avatar_url)
         await ctx.send(embed=embed)
@@ -81,7 +81,7 @@ Please join the voice channel you want me to play music in, and click on the but
 
 __Timeout in 1 minute__
       """,
-      color=config.yua_color
+      color=config.yuna_color
     )
     embed.set_author(name=self.client.user.name, icon_url=self.client.user.avatar_url)
     vc_setup_embed = await ctx.send(embed=embed, components=[Button(label="Select!", style=ButtonStyle.green, emoji = self.client.get_emoji(885845968048779304))])
@@ -107,7 +107,7 @@ __Timeout in 1 minute__
             await interaction.send("Please connect to a voice channel before clicking it")
 
       except asyncio.TimeoutError:
-        await ctx.send("iyamou-, you took too long! Please do `yua setup` again when you made up your mind.")
+        await ctx.send("iyamou-, you took too long! Please do `yuna setup` again when you made up your mind.")
         await vc_setup_embed.delete()
         return
 
@@ -136,7 +136,7 @@ __Timeout in 1 minute__
     # successful!
     embed = discord.Embed(
       title="Your server has been successfully setup!",
-      color = config.yua_color,
+      color = config.yuna_color,
       timestamp = datetime.utcnow(),
       description=f"""
 From now on I will be playing in <#{vc_id}>!
@@ -165,14 +165,14 @@ Please add songs to the server playlist with youtube links using the `addsong` c
     # is setup
     embed = discord.Embed(
       title="⚠️ARE YOU SURE⚠️",
-      color=config.yua_color,
+      color=config.yuna_color,
       description=f"""
 This command will **REMOVE** your __Voice Channel__ and __Server Playlist__ data **FOREVER**!
 Your action is inreversable.
 
 You might want to:
-> `yua changevc`
-> `yua resetplaylist`
+> `yuna changevc`
+> `yuna resetplaylist`
 
 Write "CONFIRM" to confirm your change.
       """
@@ -188,8 +188,8 @@ Write "CONFIRM" to confirm your change.
       # timedout
       embed = discord.Embed(
         title="Confirmation Timeout",
-        color = config.yua_color,
-        description="Back to safety! If you decide to reset, do `yua serverreset` again.",
+        color = config.yuna_color,
+        description="Back to safety! If you decide to reset, do `yuna serverreset` again.",
         timestamp = datetime.utcnow()
       )
       embed.set_footer(text=f"Requested by: {ctx.author}", icon_url=ctx.author.avatar_url)
@@ -211,8 +211,8 @@ Write "CONFIRM" to confirm your change.
         json.dump(info, f, indent=2)
       embed = discord.Embed(
         title="Reset Successful",
-        color=config.yua_color,
-        description="Every server data has been reset! \n do `yua setup` to setup again!",
+        color=config.yuna_color,
+        description="Every server data has been reset! \n do `yuna setup` to setup again!",
         timestamp = datetime.utcnow()
       )
       embed.set_footer(text=f"Reset requested by: {ctx.author}", icon_url=ctx.author.avatar_url)
@@ -241,9 +241,9 @@ Write "CONFIRM" to confirm your change.
         if i['songs'] == []:
           embed = discord.Embed(
             title="There is nothing to clear!",
-            color=config.yua_color,
+            color=config.yuna_color,
             timestamp=datetime.utcnow(),
-            description="Server Playlist is empty, there is nothing for me to clear! \n do `yua addsong <url>` to add songs!"
+            description="Server Playlist is empty, there is nothing for me to clear! \n do `yuna addsong <url>` to add songs!"
           )
           embed.set_author(name=self.client.user.name, icon_url=self.client.user.avatar_url)
           embed.set_footer(text=f"Requested by {ctx.author}", icon_url=ctx.author.avatar_url)
@@ -253,7 +253,7 @@ Write "CONFIRM" to confirm your change.
     # is setup
     embed = discord.Embed(
       title="⚠️ARE YOU SURE⚠️",
-      color=config.yua_color,
+      color=config.yuna_color,
       description=f"""
 This command will **CLEAR** __every song in the server playlist__ **FOREVER**!
 Your action is inreversable.
@@ -272,8 +272,8 @@ Write "CONFIRM" to confirm your change.
       # timedout
       embed = discord.Embed(
         title="Confirmation Timeout",
-        color = config.yua_color,
-        description="Back to safety! If you decide to clear, do `yua clearplaylist` again.",
+        color = config.yuna_color,
+        description="Back to safety! If you decide to clear, do `yuna clearplaylist` again.",
         timestamp = datetime.utcnow()
       )
       embed.set_footer(text=f"Requested by: {ctx.author}", icon_url=ctx.author.avatar_url)
@@ -290,8 +290,8 @@ Write "CONFIRM" to confirm your change.
 
       embed = discord.Embed(
         title="Cleared Successfully",
-        color=config.yua_color,
-        description="Server Playlist has been cleared \n do `yua addsong <url>` to add new songs!",
+        color=config.yuna_color,
+        description="Server Playlist has been cleared \n do `yuna addsong <url>` to add new songs!",
         timestamp = datetime.utcnow()
       )
       embed.set_footer(text=f"Cleared by: {ctx.author}", icon_url=ctx.author.avatar_url)
@@ -324,7 +324,7 @@ Previous channel: <#{i['vc_id']}>
 
 __Timeout in 1 minute__
           """,
-          color=config.yua_color
+          color=config.yuna_color
         )
         embed.set_author(name=self.client.user.name, icon_url=self.client.user.avatar_url)
         vc_setup_embed = await ctx.send(embed=embed, components=[Button(label="Select!", style=ButtonStyle.green, emoji = self.client.get_emoji(885845968048779304))])
@@ -350,7 +350,7 @@ __Timeout in 1 minute__
                 await interaction.send("Please connect to a voice channel before clicking it")
 
           except asyncio.TimeoutError:
-            await ctx.send("iyamou-, you took too long! Please do `yua changevc` again when you made up your mind.")
+            await ctx.send("iyamou-, you took too long! Please do `yuna changevc` again when you made up your mind.")
             await vc_setup_embed.delete()
             return
         
@@ -361,7 +361,7 @@ __Timeout in 1 minute__
 
         embed = discord.Embed(
           title="Voice Channel Changed Successfully!",
-          color = config.yua_color,
+          color = config.yuna_color,
           timestamp = datetime.utcnow(),
           description=f"""
     From now on I will be playing in <#{vc_id}>!
@@ -394,7 +394,7 @@ __Timeout in 1 minute__
       except:
         embed = discord.Embed(
           title="Failed to add song",
-          color = config.yua_color,
+          color = config.yuna_color,
           description=f"""
 The link provide is invalid.
 ```{url}```
@@ -431,7 +431,7 @@ I can only accept YouTube links. Although other music bots accept Spotify links,
 
       embed = discord.Embed(
         title="Success!",
-        color=config.yua_color,
+        color=config.yuna_color,
         description="New banger music added to the server playlist, looking good!",
         timestamp = datetime.utcnow()
       )
@@ -469,12 +469,12 @@ I can only accept YouTube links. Although other music bots accept Spotify links,
     except:
       embed = discord.Embed(
         title="Invalid Index",
-        color=config.yua_color,
+        color=config.yuna_color,
         timestamp=datetime.utcnow(),
         description=f"""
 Please input an integer!
 
-tip: Get the song's number from `yua serverplaylist`
+tip: Get the song's number from `yuna serverplaylist`
         """
       )
       embed.set_author(name=self.client.user.name, icon_url=self.client.user.avatar_url)
@@ -490,8 +490,8 @@ tip: Get the song's number from `yua serverplaylist`
           # no song in playlist
           embed = discord.Embed(
             title="There is no song in Server Playlist!",
-            color=config.yua_color,
-            description="start adding songs using `yua addsong`!",
+            color=config.yuna_color,
+            description="start adding songs using `yuna addsong`!",
             timestamp = datetime.utcnow()
           )
           embed.set_author(name=self.client.user.name, icon_url=self.client.user.avatar_url)
@@ -503,12 +503,12 @@ tip: Get the song's number from `yua serverplaylist`
           # index out of range
           embed = discord.Embed(
             title="Invalid Index",
-            color=config.yua_color,
+            color=config.yuna_color,
             timestamp=datetime.utcnow(),
             description=f"""
 There is no song with the number `{index}`!
 
-tip: Get the song's number from `yua serverplaylist`
+tip: Get the song's number from `yuna serverplaylist`
             """
           )
           embed.set_author(name=self.client.user.name, icon_url=self.client.user.avatar_url)
@@ -523,7 +523,7 @@ tip: Get the song's number from `yua serverplaylist`
 
           embed = discord.Embed(
             title="Are you sure you want to remove the following song?",
-            color=config.yua_color,
+            color=config.yuna_color,
             timestamp=datetime.utcnow()
           )
           embed.set_author(name=self.client.user.name, icon_url=self.client.user.avatar_url)
@@ -559,7 +559,7 @@ tip: Get the song's number from `yua serverplaylist`
 
                 embed = discord.Embed(
                   title="Removed Song Successfully",
-                  color=config.yua_color,
+                  color=config.yuna_color,
                   timestamp=datetime.utcnow(),
                   description=f""""""
                 )
@@ -570,9 +570,9 @@ tip: Get the song's number from `yua serverplaylist`
             except asyncio.TimeoutError:
               embed = discord.Embed(
                 title="Timeout",
-                color=config.yua_color,
+                color=config.yuna_color,
                 timestamp=datetime.utcnow(),
-                description=f"You took too long! Do `yua remsong <index>` again when you're ready."
+                description=f"You took too long! Do `yuna remsong <index>` again when you're ready."
               )
               embed.set_author(name=self.client.user.name, icon_url=self.client.user.avatar_url)
               embed.set_footer(text=f"Requested by {ctx.author}", icon_url=ctx.author.avatar_url)

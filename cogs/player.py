@@ -104,7 +104,7 @@ class player(commands.Cog):
           embed = discord.Embed(
             title="Song removed from your Server's Playlist!",
             description=f"This is happening because the video is either taken down from YouTube or the publisher privated the video.",
-            color=config.yua_color,
+            color=config.yuna_color,
             timestamp=datetime.utcnow()
           )
           embed.set_author(name=self.client.user.name, icon_url=self.client.user.avatar_url)
@@ -176,7 +176,7 @@ class player(commands.Cog):
               embed = discord.Embed(
                 title="Song removed from your Server's Playlist!",
                 description=f"This is happening because the video is either taken down from YouTube or the publisher privated the video.",
-                color=config.yua_color,
+                color=config.yuna_color,
                 timestamp=datetime.utcnow()
               )
               embed.set_author(name=self.client.user.name, icon_url=self.client.user.avatar_url)

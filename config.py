@@ -4,10 +4,10 @@ import random
 import discord
 from datetime import datetime
 
-chars = "yua "
+chars = "yuna "
 prefixList = list(map(''.join, itertools.product(*zip(chars.upper(), chars.lower()))))
 
-yua_color = 16235890
+yuna_color = 16235890
 
 
 
@@ -63,14 +63,14 @@ def helpEmbed(client, author):
   _ = []
 
   embed = discord.Embed(
-    title="Yua's Moderation Commands!",
-    color=yua_color,
+    title="Yuna's Moderation Commands!",
+    color=yuna_color,
     timestamp=datetime.utcnow(),
     description=f"""
 I host **24 hour** music channels! I'm only in a *few selected servers*.
-My prefix is `yua`
+My prefix is `yuna`
 
-Github Repo: https://github.com/Fr0xty/Yua
+Github Repo: https://github.com/Fr0xty/Yuna
 
 `setup`
 To setup me in the server
@@ -91,7 +91,7 @@ To setup me in the server
 
   embed = discord.Embed(
     title="User Commands!",
-    color=yua_color,
+    color=yuna_color,
     timestamp=datetime.utcnow(),
     description=f"""
 `vc` • get which voice channel I'm playing in

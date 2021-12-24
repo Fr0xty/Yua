@@ -28,8 +28,8 @@ class user_comms(commands.Cog):
     if not setup:
       embed = discord.Embed(
         title="Server is not setup yet!",
-        color=config.yua_color,
-        description="Please do `yua setup` first!",
+        color=config.yuna_color,
+        description="Please do `yuna setup` first!",
       )
       embed.set_author(name=self.client.user.name, icon_url=self.client.user.avatar_url)
       return(False, embed)
@@ -68,8 +68,8 @@ class user_comms(commands.Cog):
       # no song in playlist
       embed = discord.Embed(
         title="There is no song in Server Playlist!",
-        color=config.yua_color,
-        description="start adding songs using `yua addsong`!",
+        color=config.yuna_color,
+        description="start adding songs using `yuna addsong`!",
         timestamp = datetime.utcnow()
       )
       embed.set_author(name=self.client.user.name, icon_url=self.client.user.avatar_url)
@@ -78,7 +78,7 @@ class user_comms(commands.Cog):
       # has song in playlist
       embed = discord.Embed(
         title=f"Playlist for {ctx.guild.name}",
-        color=config.yua_color,
+        color=config.yuna_color,
         description=_,
         timestamp = datetime.utcnow()
       )
@@ -108,7 +108,7 @@ class user_comms(commands.Cog):
       if i['server_id'] == ctx.guild.id:
         embed = discord.Embed(
           title="Voice Channel",
-          color=config.yua_color,
+          color=config.yuna_color,
           timestamp=datetime.utcnow(),
           description=f"""
 I'm currently playing music in <#{i['vc_id']}> in this server!
@@ -140,9 +140,9 @@ I'm currently playing music in <#{i['vc_id']}> in this server!
     if server['songs'] == []:
       embed = discord.Embed(
         title="There is nothing playing!",
-        color=config.yua_color,
+        color=config.yuna_color,
         timestamp=datetime.utcnow(),
-        description="Server Playlist is empty, there is nothing playing! \n do `yua addsong <url>` to add songs!"
+        description="Server Playlist is empty, there is nothing playing! \n do `yuna addsong <url>` to add songs!"
       )
       embed.set_author(name=self.client.user.name, icon_url=self.client.user.avatar_url)
       embed.set_footer(text=f"Requested by {ctx.author}", icon_url=ctx.author.avatar_url)
@@ -153,7 +153,7 @@ I'm currently playing music in <#{i['vc_id']}> in this server!
     dur = config.convert_seconds(songs[0]['dur'])
     embed = discord.Embed(
       title="Currently Playing:",
-      color = config.yua_color,
+      color = config.yuna_color,
       timestamp = datetime.utcnow(),
       description = f"[{songs[0]['title']}]({songs[0]['url']}) {dur}"
     )
@@ -182,9 +182,9 @@ I'm currently playing music in <#{i['vc_id']}> in this server!
     else:
       embed = discord.Embed(
         title="I'm not playing any songs!",
-        color=config.yua_color,
+        color=config.yuna_color,
         timestamp=datetime.utcnow(),
-        description=f"Please add songs to the serverplaylist by doing `yua addsong <url>`"
+        description=f"Please add songs to the serverplaylist by doing `yuna addsong <url>`"
       )
       embed.set_author(name=self.client.user.name, icon_url=self.client.user.avatar_url)
       embed.set_footer(text=ctx.author, icon_url=ctx.author.avatar_url)
@@ -207,9 +207,9 @@ I'm currently playing music in <#{i['vc_id']}> in this server!
     if not vc:
       embed = discord.Embed(
         title="I'm not playing any songs!",
-        color=config.yua_color,
+        color=config.yuna_color,
         timestamp=datetime.utcnow(),
-        description=f"Please add songs to the serverplaylist by doing `yua addsong <url>`"
+        description=f"Please add songs to the serverplaylist by doing `yuna addsong <url>`"
       )
       embed.set_author(name=self.client.user.name, icon_url=self.client.user.avatar_url)
       embed.set_footer(text=ctx.author, icon_url=ctx.author.avatar_url)
@@ -232,7 +232,7 @@ I'm currently playing music in <#{i['vc_id']}> in this server!
     _ += "\n __Queue will be replenished once there's no songs!__"
     embed = discord.Embed(
       title=f"Server Queue for {ctx.guild}",
-      color = config.yua_color,
+      color = config.yuna_color,
       timestamp=datetime.utcnow(),
       description=_
     )
