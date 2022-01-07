@@ -5,13 +5,13 @@ import config
 
 class <name>(commands.Cog):
 
-  def __init__(self, client):
-    self.client = client
+    def __init__(self, client):
+        self.client = client
 
 
 
-  #declare prefix
-  client = commands.Bot(command_prefix = config.prefixList, case_insensitive=True, intents = discord.Intents().all())
+    #declare prefix
+    client = commands.Bot(command_prefix = config.prefixList, case_insensitive=True, intents = discord.Intents().all())
 
 
 
@@ -19,4 +19,4 @@ class <name>(commands.Cog):
 
 
 def setup(client):
-  client.add_cog(<name>(client))
+    client.add_cog(<name>(client))

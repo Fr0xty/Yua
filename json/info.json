@@ -1,44 +1,49 @@
 [
-  {
-    "server_id": 744786416327721050,
-    "vc_id": 889472080129716265,
-    "songs": [
-      {
-        "title": "t+pazolite - Ponko2 Girlish (feat. \u306a\u306a\u3072\u3089)",
-        "url": "https://youtu.be/rjel25XHgWE",
-        "dur": 229
-      },
-      {
-        "title": "\u30c4\u30e6 - \u5974\u96b7\u3058\u3083\u306a\u3044\u306a\u3089\u4f55\u3067\u3059\u304b\uff1f MV",
-        "url": "https://youtu.be/4tT0j_-42Ac",
-        "dur": 167
-      },
-      {
-        "title": "\u30c4\u30e6 - \u6ce5\u306e\u5206\u969b\u3067\u79c1\u3060\u3051\u306e\u5927\u5207\u3092\u596a\u304a\u3046\u3060\u306a\u3093\u3066 MV",
-        "url": "https://youtu.be/M7FH1dL51oU",
-        "dur": 194
-      }
-    ]
-  },
-  {
-    "server_id": 823904474891550750,
-    "vc_id": 919893689290072114,
-    "songs": [
-      {
-        "title": "C\u00f6 shu Nie \u2013 \u305a\u3063\u3068\u305d\u3070\u306b (Official Video) / Mini Album \"LITMUS\"",
-        "url": "https://youtu.be/X_hujJnYeDE",
-        "dur": 246
-      },
-      {
-        "title": "\u3010MV\u3011\u3042\u306e\u9752\u7a7a\u306e\u305b\u3044\u3060 (Ano Aozora no Sei da) \uff0f Pavolia Reine\u3010Original Song\u3011",
-        "url": "https://youtu.be/dzUfNQaaemk",
-        "dur": 196
-      },
-      {
-        "title": "YUC'e - Tokimeki Holiday",
-        "url": "https://youtu.be/zXOoX0nl2rA",
-        "dur": 215
-      }
-    ]
-  }
+    {
+        "server_id": 744786416327721050,
+        "vc_id": 889472080129716265,
+        "songs": [
+            {
+                "title": "t+pazolite - Ponko2 Girlish (feat. \u306a\u306a\u3072\u3089)",
+                "url": "https://youtu.be/rjel25XHgWE",
+                "dur": 229
+            },
+            {
+                "title": "\u30c4\u30e6 - \u5974\u96b7\u3058\u3083\u306a\u3044\u306a\u3089\u4f55\u3067\u3059\u304b\uff1f MV",
+                "url": "https://youtu.be/4tT0j_-42Ac",
+                "dur": 167
+            },
+            {
+                "title": "\u30c4\u30e6 - \u6ce5\u306e\u5206\u969b\u3067\u79c1\u3060\u3051\u306e\u5927\u5207\u3092\u596a\u304a\u3046\u3060\u306a\u3093\u3066 MV",
+                "url": "https://youtu.be/M7FH1dL51oU",
+                "dur": 194
+            },
+            {
+                "title": "\u30c1\u30eb\u30ce\u306e\u30d1\u30fc\u30d5\u30a7\u30af\u30c8\u3055\u3093\u3059\u3046\u6559\u5ba4\u300cfull\u300dver",
+                "url": "https://youtu.be/xFdDNrd6W9s",
+                "dur": 275
+            }
+        ]
+    },
+    {
+        "server_id": 823904474891550750,
+        "vc_id": 919893689290072114,
+        "songs": [
+            {
+                "title": "C\u00f6 shu Nie \u2013 \u305a\u3063\u3068\u305d\u3070\u306b (Official Video) / Mini Album \"LITMUS\"",
+                "url": "https://youtu.be/X_hujJnYeDE",
+                "dur": 246
+            },
+            {
+                "title": "\u3010MV\u3011\u3042\u306e\u9752\u7a7a\u306e\u305b\u3044\u3060 (Ano Aozora no Sei da) \uff0f Pavolia Reine\u3010Original Song\u3011",
+                "url": "https://youtu.be/dzUfNQaaemk",
+                "dur": 196
+            },
+            {
+                "title": "YUC'e - Tokimeki Holiday",
+                "url": "https://youtu.be/zXOoX0nl2rA",
+                "dur": 215
+            }
+        ]
+    }
 ]
