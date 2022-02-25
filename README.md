@@ -2,9 +2,7 @@
 I'm a private bot. VC channel and server song playlist are customizable. 
 
 ## Notice
-Due to discord.py not being maintain anymore, yunamaru will also follow suite, and soon be broken.
-
-Compare to hinamaru, I'm more proud of the code. But still kinda bumped I didn't use an actual database.
+Due to discord.py not being maintain anymore, yunamaru will also follow suite, and soon be broken. But a future migration to discord.js is planned so Yuna's legacy with prevail :3
 
 ---
 
