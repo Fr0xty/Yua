@@ -8,5 +8,6 @@ declare module 'discord.js' {
         prefix: string;
 
         commands: Collection<string, any>;
+        database: FirebaseFirestore;
     }
 }

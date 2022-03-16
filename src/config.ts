@@ -1,5 +1,6 @@
 import { Player } from 'discord-player';
 import Discord, { Collection, Intents } from 'discord.js';
+import firebaseAdmin from 'firebase-admin';
 
 /**
  * Yuna instance
@@ -28,5 +29,14 @@ Yuna.commands = new Collection();
  * player from discord-player
  */
 Yuna.player = new Player(Yuna);
+
+/**
+ * connect to firebase
+ */
+const app = firebaseAdmin.initializeApp({
+    credential: firebaseAdmin.credential.cert(JSON.parse(process.env.FIREBASE_CREDENTIALS!)),
+});
+Yuna.database = app.firestore();
+await Yuna.database.collection('guilds').doc('guildId').delete();
 
 export { Yuna };
