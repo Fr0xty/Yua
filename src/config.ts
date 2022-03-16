@@ -1,6 +1,9 @@
 import { Player } from 'discord-player';
-import Discord, { Intents } from 'discord.js';
+import Discord, { Collection, Intents } from 'discord.js';
 
+/**
+ * Yuna instance
+ */
 const Yuna = new Discord.Client({
     intents: [
         Intents.FLAGS.GUILDS,
@@ -10,8 +13,20 @@ const Yuna = new Discord.Client({
     ],
 });
 
+/**
+ * Yuna's properties
+ */
 Yuna.color = '#F7BD72';
+Yuna.prefix = 'yuna ';
 
+/**
+ * to store all Yuna's commands
+ */
+Yuna.commands = new Collection();
+
+/**
+ * player from discord-player
+ */
 Yuna.player = new Player(Yuna);
 
 export { Yuna };
