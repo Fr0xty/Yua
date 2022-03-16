@@ -1,0 +1,39 @@
+{
+  "name": "yuna",
+  "version": "2.0.0",
+  "description": "a private 24 hour music bot for selected servers",
+  "main": "./dist/bot.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node ./dist/bot.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Fr0xty/Yuna.git"
+  },
+  "keywords": [
+    "discord",
+    "discord bot",
+    "discord.js",
+    "music bot"
+  ],
+  "author": "Fr0xty",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Fr0xty/Yuna/issues"
+  },
+  "homepage": "https://github.com/Fr0xty/Yuna#readme",
+  "dependencies": {
+    "discord-player": "^5.2.2",
+    "discord.js": "^13.6.0",
+    "dotenv": "^16.0.0",
+    "express": "^4.17.3",
+    "opusscript": "^0.0.8"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.13",
+    "@types/node": "^17.0.21",
+    "typescript": "^4.6.2"
+  }
+}

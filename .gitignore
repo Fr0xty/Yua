@@ -1,3 +1,3 @@
-__pycache__
-*.lock
-*.toml
+.env
+node_modules
+dist
