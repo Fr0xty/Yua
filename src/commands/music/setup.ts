@@ -20,7 +20,7 @@ class setup implements BaseCommand {
         this.description = 'to set me up in your server.';
     }
 
-    async execute(msg: Message<boolean>, args: string[]): Promise<any> {
+    async execute(msg: Message<boolean>, args: string[]) {
         /**
          * return if already setup
          */
