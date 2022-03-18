@@ -17,7 +17,7 @@ class serverreset implements BaseCommand {
 
     constructor() {
         this.name = 'serverreset';
-        this.description = 'to set me up in your server.';
+        this.description = 'reset all server settings.';
     }
 
     async execute(msg: Message<boolean>, args: string[]) {
