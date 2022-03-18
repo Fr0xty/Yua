@@ -1,12 +1,4 @@
-import {
-    GuildMember,
-    Message,
-    MessageActionRow,
-    MessageButton,
-    MessageEmbed,
-    VoiceBasedChannel,
-    VoiceChannel,
-} from 'discord.js';
+import { Message, MessageEmbed } from 'discord.js';
 import { BaseCommand } from 'yuna';
 import { Yuna } from '../../config.js';
 import { checkSetup } from '../../utils.js';
