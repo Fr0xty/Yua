@@ -1,5 +1,5 @@
 import { Player } from 'discord-player';
-import Discord, { Collection, Intents } from 'discord.js';
+import Discord, { Collection, Intents, MessageEmbed } from 'discord.js';
 import firebaseAdmin from 'firebase-admin';
 
 /**
@@ -38,5 +38,13 @@ const app = firebaseAdmin.initializeApp({
 });
 Yuna.database = app.firestore();
 await Yuna.database.collection('guilds').doc('guildId').delete();
+
+/**
+ * embeds
+ */
+Yuna.notSetupYetEmbed = new MessageEmbed()
+    .setColor(Yuna.color)
+    .setTitle('Server is not setup yet!')
+    .setDescription('Please do `yuna setup` first.');
 
 export { Yuna };

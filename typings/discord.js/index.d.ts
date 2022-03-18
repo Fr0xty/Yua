@@ -1,5 +1,5 @@
 import { Player } from 'discord-player';
-import { Client, Collection } from 'discord.js';
+import { Client, Collection, Snowflake } from 'discord.js';
 
 declare module 'discord.js' {
     export interface Client {
@@ -9,5 +9,8 @@ declare module 'discord.js' {
 
         commands: Collection<string, any>;
         database: FirebaseFirestore;
+
+        notSetupYetEmbed: MessageEmbed;
+        utils: any;
     }
 }
