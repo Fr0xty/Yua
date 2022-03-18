@@ -75,7 +75,10 @@ __Timeout in 1 minute__
             collector.stop('selected');
         });
         collector.on('end', async (collected, reason) => {
-            await vcSetupEmbed.delete();
+            try {
+                await vcSetupEmbed.delete();
+            } catch {}
+
             if (reason !== 'selected') {
                 await msg.reply('You took too long! Please do `yuna setup` again when you made up your mind.');
                 return;

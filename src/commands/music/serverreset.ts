@@ -24,7 +24,7 @@ class serverreset implements BaseCommand {
         /**
          * return if not setup
          */
-        const isSetup = checkSetup(msg.guildId!);
+        const isSetup = await checkSetup(msg.guildId!);
         if (!isSetup) return await msg.reply({ embeds: [Yuna.notSetupYetEmbed] });
 
         /**
@@ -44,7 +44,7 @@ Write "CONFIRM" to confirm your change.
         const confirmationMsg = await msg.reply({ embeds: [embed] });
         const filter = (m: Message) => m.content === 'CONFIRM' && m.author.id === msg.author.id;
         try {
-            await msg.channel.awaitMessages({ filter, max: 1, time: 10_000, errors: ['time'] });
+            await msg.channel.awaitMessages({ filter, max: 1, time: 60_000, errors: ['time'] });
         } catch {
             return await msg.reply('Back to safety! If you really want to reset, please try again.');
         }
