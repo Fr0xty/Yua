@@ -1,4 +1,12 @@
-import { GuildMember, Message, MessageActionRow, MessageButton, MessageEmbed } from 'discord.js';
+import {
+    GuildMember,
+    Message,
+    MessageActionRow,
+    MessageButton,
+    MessageEmbed,
+    VoiceBasedChannel,
+    VoiceChannel,
+} from 'discord.js';
 import { BaseCommand } from 'yuna';
 import { Yuna } from '../../config.js';
 import { checkSetup } from '../../utils.js';
@@ -19,7 +27,7 @@ class setup implements BaseCommand {
         const isSetup = await checkSetup(msg.guildId!);
         if (isSetup) return await msg.reply('Server is already setup!');
 
-        let vc;
+        let vc: VoiceBasedChannel;
         /**
          * setup vc
          */
@@ -64,15 +72,36 @@ __Timeout in 1 minute__
              * author selected a vc
              */
             vc = memberVC;
-            await vcSetupEmbed.delete();
             collector.stop('selected');
         });
         collector.on('end', async (collected, reason) => {
+            await vcSetupEmbed.delete();
             if (reason !== 'selected') {
-                await vcSetupEmbed.delete();
                 await msg.reply('You took too long! Please do `yuna setup` again when you made up your mind.');
                 return;
             }
+
+            /**
+             * register gulid into firebase
+             */
+            await Yuna.database.collection('guilds').doc(msg.guildId).set({
+                voiceChannelId: vc.id,
+                songs: [],
+            });
+
+            embed = new MessageEmbed()
+                .setTitle('Your server has been successfully setup!')
+                .setColor(Yuna.color)
+                .setDescription(
+                    `
+From now on I will be playing in <#${vc.id}>!
+
+Please add songs to the server playlist using the \`addsong\` command!
+                `
+                )
+                .setTimestamp();
+            await msg.reply({ embeds: [embed] });
+            await msg.react('918494275728179251');
         });
     }
 }

@@ -14,7 +14,8 @@ Yuna.on('messageCreate', async (msg): Promise<any> => {
 
     try {
         await command.execute(msg, args);
-    } catch (err: any) {
-        await msg.reply(err);
+    } catch (err) {
+        await msg.reply(String(err));
+        console.log(err);
     }
 });
