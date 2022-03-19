@@ -26,7 +26,7 @@ To setup me in the server
 \`addsong <url>\` • add song to serverplaylist
 \`remsong <index>\` • remove song from serverplaylist
 \`changevc\` • change which voice channel I will be playing in
-\`serverplaylist\` • view serverplaylist
+\`serverplaylist\` \`sp\` • view serverplaylist
 \`clearplaylist\` • reset serverplaylist (irreversible)
 \`vc\` • get which voice channel I'm playing in
 \`nowplaying\` \`np\` • view current playing song
