@@ -6,6 +6,7 @@ declare module 'discord.js' {
         player: Player;
         color: ColorResolvable;
         prefix: string;
+        okEmoji: EmojiResolvable;
 
         commands: Collection<string, any>;
         database: FirebaseFirestore;
