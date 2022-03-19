@@ -44,6 +44,7 @@ class addsong implements BaseCommand {
                   leaveOnEmpty: false,
                   initialVolume: 50,
               });
+        if (!guildDocumentData.songs.length) queue.setRepeatMode(2);
 
         /**
          * search and add to queue

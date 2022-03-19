@@ -33,6 +33,8 @@ Yuna.on('ready', async () => {
             leaveOnEmpty: false,
             initialVolume: 50,
         });
+        queue.setRepeatMode(2);
+
         const searchResults: Track[] = [];
         for (const songURL of data.songs) {
             const search = await Yuna.player.search(songURL, {
