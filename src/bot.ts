@@ -14,6 +14,10 @@ commandCategories.forEach((category) => {
         const { default: importCommand } = await import(`./commands/${category}/${command}`);
 
         Yuna.commands.set(importCommand.name, importCommand);
+        if (importCommand.aliases)
+            importCommand.aliases.forEach((alias: string) => {
+                Yuna.commands.set(alias, importCommand);
+            });
     });
 });
 
