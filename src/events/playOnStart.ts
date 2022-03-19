@@ -34,6 +34,7 @@ Yuna.on('ready', async () => {
             initialVolume: 50,
         });
         queue.setRepeatMode(2);
+        queue.shuffle();
 
         const searchResults: Track[] = [];
         for (const songURL of data.songs) {
