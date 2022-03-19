@@ -64,15 +64,43 @@ class addsong implements BaseCommand {
         /**
          * add search result to queue && add to firebase guild songs array
          */
+        const oldGuildDocumentData = JSON.parse(JSON.stringify(guildDocumentData));
         if (query.includes('http')) {
-            queue.addTracks(searchResults.tracks);
             guildDocumentData.songs.push(...searchResults.tracks.map((track) => track.url));
+
+            queue.addTracks(searchResults.tracks);
             guildDocument.update(guildDocumentData);
         } else {
-            queue.addTrack(searchResults.tracks[0]);
             guildDocumentData.songs.push(searchResults.tracks[0].url);
+
+            queue.addTrack(searchResults.tracks[0]);
             guildDocument.update(guildDocumentData);
         }
+
+        /**
+         * send added song embed
+         */
+        const addedMoreThanOneTrack =
+            guildDocumentData.songs.length - oldGuildDocumentData.songs.length === 1 ? false : true;
+
+        const embed = addedMoreThanOneTrack
+            ? new MessageEmbed()
+                  .setColor(Yuna.color)
+                  .setAuthor({
+                      name: `Music queue for ${msg.guild!.name}`,
+                      iconURL: queue.guild.iconURL() ? queue.guild.iconURL()! : Yuna.user!.displayAvatarURL(),
+                  })
+                  .setDescription(`Added ${searchResults.tracks.length} song.`)
+            : new MessageEmbed()
+                  .setColor(Yuna.color)
+                  .setAuthor({
+                      name: `Music queue for ${queue.guild.name}`,
+                      iconURL: queue.guild.iconURL() ? queue.guild.iconURL()! : Yuna.user!.displayAvatarURL(),
+                  })
+                  .setThumbnail(searchResults.tracks[0].thumbnail)
+                  .setTitle('Added to queue:')
+                  .setDescription(`[${searchResults.tracks[0].title}](${searchResults.tracks[0].url})`);
+        await msg.reply({ embeds: [embed] });
 
         if (!queue.playing) {
             const vc = (await Yuna.channels.fetch(guildDocumentData.voiceChannelId)) as VoiceBasedChannel;
