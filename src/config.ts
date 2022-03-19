@@ -31,6 +31,14 @@ Yuna.commands = new Collection();
  */
 Yuna.player = new Player(Yuna);
 
+Yuna.player.on('error', (queue, error) => {
+    console.log(error);
+});
+
+Yuna.player.on('connectionError', (queue, error) => {
+    console.log(error);
+});
+
 /**
  * connect to firebase
  */
