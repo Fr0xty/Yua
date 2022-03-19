@@ -1,4 +1,4 @@
-import { QueryType } from 'discord-player';
+import { QueryType, Track } from 'discord-player';
 import { VoiceBasedChannel } from 'discord.js';
 import { Yuna } from '../config.js';
 
@@ -33,21 +33,20 @@ Yuna.on('ready', async () => {
             leaveOnEmpty: false,
             initialVolume: 50,
         });
-
-        const searchResults = await Yuna.player.search(data.songs, {
-            requestedBy: Yuna.user!, // dummy data to avoid typescript screaming at me
-            searchEngine: QueryType.AUTO,
-        });
-        if (data.songs.length === 1) {
-            queue.addTrack(searchResults.tracks[0]);
-        } else {
-            queue.addTracks(searchResults.tracks);
+        const searchResults: Track[] = [];
+        for (const songURL of data.songs) {
+            const search = await Yuna.player.search(songURL, {
+                requestedBy: Yuna.user!, // dummy data to avoid typescript screaming at me
+                searchEngine: QueryType.AUTO,
+            });
+            searchResults.push(search.tracks[0]);
         }
+        queue.addTracks([...searchResults]);
 
         /**
          * join vc and start playing
          */
-        const vc = (await Yuna.channels.fetch(data.vc)) as VoiceBasedChannel;
+        const vc = (await Yuna.channels.fetch(data.voiceChannelId)) as VoiceBasedChannel;
         await queue.connect(vc);
         await queue.play();
     }

@@ -1,5 +1,5 @@
 import { QueryType } from 'discord-player';
-import { Message, MessageEmbed } from 'discord.js';
+import { Message, MessageEmbed, VoiceBasedChannel } from 'discord.js';
 import { BaseCommand } from 'yuna';
 import { Yuna } from '../../config.js';
 import { checkSetup } from '../../utils.js';
@@ -65,13 +65,19 @@ class addsong implements BaseCommand {
          */
         if (query.includes('http')) {
             queue.addTracks(searchResults.tracks);
-            guildDocument.update(guildDocumentData.songs.push(...searchResults.tracks.map((track) => track.url)));
+            guildDocumentData.songs.push(...searchResults.tracks.map((track) => track.url));
+            guildDocument.update(guildDocumentData);
         } else {
             queue.addTrack(searchResults.tracks[0]);
-            guildDocument.update(guildDocumentData.songs.push(searchResults.tracks[0].url));
+            guildDocumentData.songs.push(searchResults.tracks[0].url);
+            guildDocument.update(guildDocumentData);
         }
 
-        if (!queue.playing) await queue.play();
+        if (!queue.playing) {
+            const vc = (await Yuna.channels.fetch(guildDocumentData.voiceChannelId)) as VoiceBasedChannel;
+            await queue.connect(vc);
+            await queue.play();
+        }
     }
 }
 

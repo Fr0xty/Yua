@@ -29,6 +29,7 @@
     "discord.js": "^13.6.0",
     "dotenv": "^16.0.0",
     "express": "^4.17.3",
+    "ffmpeg-static": "^4.4.1",
     "firebase-admin": "^10.0.2",
     "opusscript": "^0.0.8"
   },
