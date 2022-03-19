@@ -20,6 +20,15 @@ class vc implements BaseCommand {
         if (!isSetup) return await msg.reply({ embeds: [Yuna.notSetupYetEmbed] });
 
         /**
+         * return if no song in serverplaylist
+         */
+        const queue = Yuna.player.getQueue(msg.guild!);
+        if (!queue)
+            return await msg.reply(
+                'There is no song in serverplaylist, add songs using `yuna addsong <url/keywords>`.'
+            );
+
+        /**
          * send vc
          */
         const guildProfile = await Yuna.database.collection('guilds').doc(msg.guildId).get();
