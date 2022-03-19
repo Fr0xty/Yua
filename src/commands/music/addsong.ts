@@ -70,6 +70,8 @@ class addsong implements BaseCommand {
             queue.addTrack(searchResults.tracks[0]);
             guildDocument.update(guildDocumentData.songs.push(searchResults.tracks[0].url));
         }
+
+        if (!queue.playing) await queue.play();
     }
 }
 
