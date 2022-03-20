@@ -1,5 +1,6 @@
 import { QueryType, Track } from 'discord-player';
 import { VoiceBasedChannel } from 'discord.js';
+import { ByteLengthQueuingStrategy } from 'node:stream/web';
 import { Yuna } from '../config.js';
 
 /**
@@ -12,16 +13,20 @@ Yuna.on('ready', async () => {
     const { docs: guilds } = await Yuna.database.collection('guilds').get();
 
     for (let i = 0; i < guilds.length; i++) {
+        const guildDocumentSnapshot: FirebaseFirestore.QueryDocumentSnapshot = guilds[i];
+        const guildId = guildDocumentSnapshot.id;
+        const guildDocument = Yuna.database.collection('guilds').doc(guildId);
+        const guildDocumentData = guildDocumentSnapshot.data()!;
+
         /**
          * if theres no songs in serverplaylist skip
          */
-        const data = guilds[i].data()!;
-        if (!data.songs.length) continue;
+        if (!guildDocumentData.songs.length) continue;
 
         /**
          * create server queue and add tracks to queue
          */
-        const queue = Yuna.player.createQueue(await Yuna.guilds.fetch(guilds[i].id), {
+        const queue = Yuna.player.createQueue(await Yuna.guilds.fetch(guildId), {
             ytdlOptions: {
                 quality: 'highest',
                 filter: 'audioonly',
@@ -33,23 +38,42 @@ Yuna.on('ready', async () => {
             leaveOnEmpty: false,
             initialVolume: 50,
         });
-        queue.setRepeatMode(2);
-        queue.shuffle();
 
+        const oldSongDataLength = guildDocumentData.songs.length;
         const searchResults: Track[] = [];
-        for (const songURL of data.songs) {
+        for (const songURL of guildDocumentData.songs) {
             const search = await Yuna.player.search(songURL, {
                 requestedBy: Yuna.user!, // dummy data to avoid typescript screaming at me
                 searchEngine: QueryType.AUTO,
             });
+            /**
+             * remove faulty links with no results
+             */
+            if (!search.tracks.length) {
+                guildDocumentData.songs.splice(guildDocumentData.songs.indexOf(songURL), 1);
+                continue;
+            }
             searchResults.push(search.tracks[0]);
         }
-        queue.addTracks([...searchResults]);
+        /**
+         * add all searched tracks
+         */
+        queue.addTracks(searchResults);
+        /**
+         * if found faulty links, update to firebase
+         */
+        if (oldSongDataLength !== guildDocumentData.songs.length) await guildDocument.update(guildDocumentData);
+
+        /**
+         * play forever and shuffle on start
+         */
+        queue.setRepeatMode(2);
+        queue.shuffle();
 
         /**
          * join vc and start playing
          */
-        const vc = (await Yuna.channels.fetch(data.voiceChannelId)) as VoiceBasedChannel;
+        const vc = (await Yuna.channels.fetch(guildDocumentData.voiceChannelId)) as VoiceBasedChannel;
         await queue.connect(vc);
         await queue.play();
     }
