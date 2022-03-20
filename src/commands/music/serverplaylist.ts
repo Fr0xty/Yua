@@ -23,6 +23,9 @@ class serverplaylist implements BaseCommand {
 
         const queue = Yuna.player.getQueue(msg.guild!);
 
+        /**
+         * return if no song in serverplaylist
+         */
         if (!queue)
             return await msg.reply(
                 'There is no song in serverplaylist, add songs using `yuna addsong <url/keywords>`.'

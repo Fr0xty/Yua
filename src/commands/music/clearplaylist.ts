@@ -1,15 +1,15 @@
-import { Message } from 'discord.js';
+import { GuildMember, Message, MessageActionRow, MessageButton, MessageEmbed, VoiceBasedChannel } from 'discord.js';
 import { BaseCommand } from 'yuna';
 import { Yuna } from '../../config.js';
 import { checkSetup } from '../../utils.js';
 
-class skip implements BaseCommand {
+class changevc implements BaseCommand {
     name: string;
     description: string;
 
     constructor() {
-        this.name = 'skip';
-        this.description = 'skip current song.';
+        this.name = 'changevc';
+        this.description = 'change server vc where I will play songs.';
     }
 
     async execute(msg: Message<boolean>, args: string[]) {
@@ -27,9 +27,7 @@ class skip implements BaseCommand {
             return await msg.reply(
                 'There is no song in serverplaylist, add songs using `yuna addsong <url/keywords>`.'
             );
-
-        queue.skip();
     }
 }
 
-export default new skip();
+export default new changevc();
