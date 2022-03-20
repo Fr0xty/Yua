@@ -60,7 +60,7 @@ class addsong implements BaseCommand {
         /**
          * return if no result
          */
-        if (!searchResults)
+        if (!searchResults.tracks.length)
             return await msg.reply(
                 'Sorry, the query provided did not have any results. Please try a different link / search keyword.'
             );
