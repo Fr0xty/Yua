@@ -19,7 +19,7 @@ const Yuna = new Discord.Client({
  */
 Yuna.color = '#F7BD72';
 Yuna.prefix = 'yuna ';
-Yuna.okEmoji = '954738025856917615';
+Yuna.okEmoji = '920600099556589569';
 
 /**
  * to store all Yuna's commands
