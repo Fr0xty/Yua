@@ -5,6 +5,4 @@ app.get('/', async (req, res) => {
     res.send('Yuna is currently online.');
 });
 
-export default () => {
-    app.listen(3000);
-};
+app.listen(3000);
