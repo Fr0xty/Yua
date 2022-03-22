@@ -97,7 +97,7 @@ Please add songs to the server playlist using the \`addsong\` command!
                 )
                 .setTimestamp();
             await msg.reply({ embeds: [embed] });
-            await msg.react('918494275728179251');
+            await msg.react(Yuna.okEmoji);
         });
     }
 }
