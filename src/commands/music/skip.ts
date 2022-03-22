@@ -28,6 +28,22 @@ class skip implements BaseCommand {
                 'There is no song in serverplaylist, add songs using `yuna addsong <url/keywords>`.'
             );
 
+        const [skipToNumberString] = args;
+        if (!skipToNumberString) return queue.skip();
+
+        /**
+         * provided index to skip to
+         */
+        const skipToNumber = Number(skipToNumberString);
+        if (isNaN(skipToNumber))
+            return await msg.reply(
+                `\`${skipToNumberString}\` is not a number! please check by doing \`yuna serverplaylist\`.`
+            );
+        if (skipToNumber < 2 || skipToNumber > queue.tracks.length + 1)
+            return await msg.reply('That is not a valid song index, please check by doing `yuna serverplaylist`.');
+
+        const skipToNumberIndex = skipToNumber - 2;
+        queue.tracks = queue.tracks.concat(queue.tracks.splice(0, skipToNumberIndex - 1));
         queue.skip();
     }
 }

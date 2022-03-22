@@ -14,6 +14,7 @@ class help implements BaseCommand {
     async execute(msg: Message<boolean>, args: string[]): Promise<any> {
         const embed = new MessageEmbed()
             .setColor(Yuna.color)
+            .setFooter({ text: '<args> are required, [args] are optional.' })
             .setAuthor({ name: 'Yuna', iconURL: Yuna.user!.displayAvatarURL() }).setDescription(`
 I host **24 hour** music channels! I'm only in a *few selected servers*.
 My prefix is \`yuna\`
@@ -30,7 +31,8 @@ To setup me in the server
 \`clearplaylist\` • reset serverplaylist (irreversible)
 \`vc\` • get which voice channel I'm playing in
 \`nowplaying\` \`np\` • view current playing song
-\`skip\` • skip current song
+\`skip [skip_to_index]\` • skip current song
+\`shuffle\` • shuffle the serverplaylist
 \`queue\` \`q\` • view current song queue
             `);
 
