@@ -1,6 +1,9 @@
+<img src="https://user-images.githubusercontent.com/86002969/160274128-41f5ca2e-a9be-4f37-8819-2ef75e94df8c.png" height=100 width=100 align="left" />
+
+
 # Yuna
 
-A 24 hours Discord music / radio bot. Server playlist can be customized by members. Skip songs, shuffle, etc...
+A 24 hours Discord music / radio bot. Simple and lightweight by design. Server members can share and contribute to the server playlist, and enjoy music any time of the day. No matter which timezone you're in, you can bet Yuna is there playing. Members can skip, shuffle, get music info etc...
 
 ## Hosting Yourself
 
