@@ -29,7 +29,10 @@ class skip implements BaseCommand {
             );
 
         const [skipToNumberString] = args;
-        if (!skipToNumberString) return queue.skip();
+        if (!skipToNumberString) {
+            queue.skip();
+            return await msg.react(Yuna.okEmoji);
+        }
 
         /**
          * provided index to skip to
@@ -45,6 +48,7 @@ class skip implements BaseCommand {
         const skipToNumberIndex = skipToNumber - 2;
         queue.tracks = queue.tracks.concat(queue.tracks.splice(0, skipToNumberIndex - 1));
         queue.skip();
+        await msg.react(Yuna.okEmoji);
     }
 }
 
